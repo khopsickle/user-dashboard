@@ -1,20 +1,8 @@
-# Welcome to React Router!
+# Simple Dashboard
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A small dashboard application that displays users in a searchable, sortable table.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
+## Setup
 
 ### Installation
 
@@ -34,6 +22,44 @@ npm run dev
 
 Your application will be available at `http://localhost:5173`.
 
+## Architecture
+
+### Frontend
+
+- **React**: for UI and functional components
+- **React Router**: for navigation
+- **Tailwind CSS**: for responsive styling, and styling utilities to help with accessbility
+- **Axios**: for HTTP requests from JSONPlaceholder API
+- **React Query**: for handling data and request load/error states
+
+### Dev & Build Tools
+
+- **Vite**: lightweight, quick development server for fast dev. can also generate static files for a production build
+- **ESLint & Prettier**: code quality and formatting
+
+### Testing
+
+- **Jest**: component testing
+- **React Testing Library**: integration testing
+
+### Rationale
+
+Overall, my stack decisions came down to benefit vs. complexity. Each dependency I chose to add gave a lot of convenience without adding too much extra code or requiring a large learning curve to use. Several other options were excluded for the sake of simplicity, time, and the scope of a small frontend dashboard.
+
+**State Management**
+I consider Redux overkill for the app in its current state. It would add a massive dependency and a ton of extra code for a relatively simple UI with only 2 views. Context API could also be used for state management, but React Query and local component state covers most of what we would need. There's no tangible benefit to adding complexity with Context API.
+
+**API Requests**
+Axios + React Query is a common React pattern. Axios handles the actual HTTP requests, as React Query still needs an HTTP client. React Query allows us to handle server state and additional utility with loading, caching, error, and success management.
+
+As a bonus, I've also never actually used React Query before and wanted to check it out.
+
+**Form Validation**
+I considered Formik and React Hook Form for more professional and convenient form validation. But since the add user feature is fairly straightforward with simple string inputs and few required fields, I opted to use native React features. Adding a dependency and modifying the form for better performance could be a later improvement.
+
+**Testing**
+While the app could benefit from robust E2E testing, Jest + React Testing Library can cover all the major user paths without adding too much bloat or slowing down the testing process. Adding on Cypress or Playwright can be done further down the line if the app were to become more complex.
+
 ## Building for Production
 
 Create a production build:
@@ -44,25 +70,7 @@ npm run build
 
 ## Deployment
 
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+Static deployment to Netlify, Vercel, or GH Pages
 
 ### DIY Deployment
 
@@ -77,10 +85,6 @@ Make sure to deploy the output of `npm run build`
 │   ├── client/    # Static assets
 │   └── server/    # Server-side code
 ```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
 
 ---
 
