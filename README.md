@@ -60,6 +60,8 @@ I considered Formik and React Hook Form for more professional and convenient for
 **Testing**
 While the app could benefit from robust E2E testing, Jest + React Testing Library can cover all the major user paths without adding too much bloat or slowing down the testing process. Adding on Cypress or Playwright can be done further down the line if the app were to become more complex.
 
+Regarding the tests themselves, since the project has known requirements and well-defined UI and API, both TDD and red-green-refactor approach seemed overkill. I opted to create a working application first then add key unit tests for component behavior and integration tests for basic user flows.
+
 ## Building for Production
 
 Create a production build:
