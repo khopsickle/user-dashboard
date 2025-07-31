@@ -32,7 +32,7 @@ export default function UserTableHeader({
       onClick={onClick}
       onKeyDown={onKeyDown}
       aria-sort={isSorted ? (isAsc ? "ascending" : "descending") : "none"}
-      className="cursor-pointer select-none"
+      className="cursor-pointer select-none break-word"
     >
       {sortKey.charAt(0).toUpperCase() + sortKey.slice(1)}
     </th>

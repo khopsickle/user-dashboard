@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { User } from "~/types/user";
 import UserTableHeader from "./UserTableHeader";
 import { SORTABLE_KEYS, type SortableKeys } from "~/types/sortableKeys";
+import UserSearch from "./UserSearch";
 
 type UserTableProps = {
   users: User[];
@@ -32,11 +33,33 @@ function sortUsers(users: User[], key: SortableKeys, isAsc: boolean = true) {
   });
 }
 
+function filterUsers(users: User[], query: string): User[] {
+  if (!query) return users;
+
+  const lowercaseQuery = query.toLowerCase();
+
+  return users.filter((user) => {
+    const searchableFields = [
+      user.name,
+      user.username,
+      user.email,
+      user.address.street,
+      user.phone,
+      user.company.name,
+      user.website,
+    ];
+    return searchableFields.some((field) =>
+      field.toLowerCase().includes(lowercaseQuery),
+    );
+  });
+}
+
 export default function UserTable({ users }: UserTableProps) {
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     key: "name",
     isAsc: true,
   });
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleColumnSort = (key: SortableKeys) => {
     setSortConfig((prevState) => ({
@@ -45,42 +68,64 @@ export default function UserTable({ users }: UserTableProps) {
     }));
   };
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  const filteredUsers = useMemo(
+    () => filterUsers(users, searchQuery),
+    [users, searchQuery],
+  );
+
   const sortedUsers = useMemo(
-    () => sortUsers(users, sortConfig.key, sortConfig.isAsc),
-    [users, sortConfig],
+    () => sortUsers(filteredUsers, sortConfig.key, sortConfig.isAsc),
+    [filteredUsers, sortConfig],
   );
 
   return (
     <main className="p-4 container mx-auto">
-      <table className="border-collapse border">
-        <thead>
-          <tr>
-            {SORTABLE_KEYS.map((key) => (
-              <UserTableHeader
-                key={key}
-                sortKey={key}
-                handleSort={handleColumnSort}
-                isSorted={sortConfig.key === key}
-                isAsc={sortConfig.isAsc}
-              />
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedUsers.map((user) => (
-            <tr key={user.id.toString()}>
-              <td>{user.name}</td>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-              <td>{user.address.street}</td>
-              <td>{user.phone}</td>
-              <td>
-                {user.company.name} {user.website}
-              </td>
+      <UserSearch onSearch={handleSearch} />
+      <div className="overflow-x-auto">
+        <table className="border-collapse border w-full">
+          <thead>
+            <tr>
+              {SORTABLE_KEYS.map((key) => (
+                <UserTableHeader
+                  key={key}
+                  sortKey={key}
+                  handleSort={handleColumnSort}
+                  isSorted={sortConfig.key === key}
+                  isAsc={sortConfig.isAsc}
+                />
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {sortedUsers.length === 0 ? (
+              <tr>
+                <td colSpan={SORTABLE_KEYS.length} className="text-center">
+                  <span className="text-rose-500" role="alert">
+                    No users found
+                  </span>
+                </td>
+              </tr>
+            ) : (
+              sortedUsers.map((user) => (
+                <tr key={user.id.toString()}>
+                  <td>{user.name}</td>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>{user.address.street}</td>
+                  <td>{user.phone}</td>
+                  <td>
+                    {user.company.name} {user.website}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </main>
   );
 }
