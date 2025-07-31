@@ -12,13 +12,17 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function UserList() {
-  const { isPending, error, data } = useQuery<User[], Error>({
+  const { isLoading, error, data } = useQuery<User[], Error>({
     queryKey: ["userData"],
     queryFn: queryFn,
+    staleTime: 15 * 60 * 1000, // 15 mins
   });
 
-  if (isPending) return <>Loading...</>;
+  if (isLoading) return <>Loading...</>;
   if (error) return <>An error has occurred: {error.message}</>;
+  if (!data || data.length === 0) {
+    return <>No users found.</>;
+  }
 
   return <UserTable users={data} />;
 }
