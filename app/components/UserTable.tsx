@@ -5,23 +5,106 @@ type UserTableProps = {
   users: User[];
 };
 
+type SortableKeys =
+  | "name"
+  | "username"
+  | "email"
+  | "address"
+  | "phone"
+  | "company";
+
+type SortConfig = {
+  key: SortableKeys;
+  isAsc: boolean;
+};
+
+function getNestedValue(user: User, key: SortableKeys): string {
+  switch (key) {
+    case "address":
+      return user.address.street;
+    case "company":
+      return user.company.name;
+    default:
+      return user[key];
+  }
+}
+
+function sortUsers(users: User[], key: SortableKeys, isAsc: boolean = true) {
+  return [...users].sort((a, b) => {
+    const aValue = getNestedValue(a, key);
+    const bValue = getNestedValue(b, key);
+
+    return isAsc ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+  });
+}
+
 export default function UserTable({ users }: UserTableProps) {
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    key: "name",
+    isAsc: true,
+  });
+
+  const handleColumnSort = (key: SortableKeys) => {
+    setSortConfig((prevState) => ({
+      key,
+      isAsc: prevState.key === key ? !prevState.isAsc : prevState.isAsc,
+    }));
+  };
+
+  const sortedUsers = sortUsers(users, sortConfig.key, sortConfig.isAsc);
+
   return (
     <main className="p-4 container mx-auto">
       <table className="border-collapse border">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th>Company</th>
+            <th
+              onClick={() => {
+                handleColumnSort("name");
+              }}
+            >
+              Name
+            </th>
+            <th
+              onClick={() => {
+                handleColumnSort("username");
+              }}
+            >
+              Username
+            </th>
+            <th
+              onClick={() => {
+                handleColumnSort("email");
+              }}
+            >
+              Email
+            </th>
+            <th
+              onClick={() => {
+                handleColumnSort("address");
+              }}
+            >
+              Address
+            </th>
+            <th
+              onClick={() => {
+                handleColumnSort("phone");
+              }}
+            >
+              Phone
+            </th>
+            <th
+              onClick={() => {
+                handleColumnSort("company");
+              }}
+            >
+              Company
+            </th>
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr id={user.id.toString()}>
+          {sortedUsers.map((user) => (
+            <tr key={user.id.toString()}>
               <td>{user.name}</td>
               <td>{user.username}</td>
               <td>{user.email}</td>
