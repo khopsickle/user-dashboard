@@ -8,9 +8,15 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-white dark:bg-slate-900;
+  @apply text-slate-900 dark:text-slate-300;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+}
+
+td,
+th {
+  @apply border p-2;
 }
