@@ -1,4 +1,6 @@
+import { useQuery } from "@tanstack/react-query";
 import type { Route } from "./+types/userlist";
+import { queryFn } from "~/lib/queryClient";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,5 +10,13 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function UserList() {
-  return <>user list page</>;
+  const { isPending, error, data } = useQuery({
+    queryKey: ["userData"],
+    queryFn: queryFn,
+  });
+
+  if (isPending) return <>Loading...</>;
+  if (error) return <>An error has occurred: {error.message}</>;
+
+  return <>{data?.map((user) => user.name)}</>;
 }
