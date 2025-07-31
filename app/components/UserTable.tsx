@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { User } from "~/types/user";
 
 type UserTableProps = {
@@ -51,55 +51,24 @@ export default function UserTable({ users }: UserTableProps) {
     }));
   };
 
-  const sortedUsers = sortUsers(users, sortConfig.key, sortConfig.isAsc);
+  const handleSort = (key: SortableKeys) => () => handleColumnSort(key);
+
+  const sortedUsers = useMemo(
+    () => sortUsers(users, sortConfig.key, sortConfig.isAsc),
+    [users, sortConfig],
+  );
 
   return (
     <main className="p-4 container mx-auto">
       <table className="border-collapse border">
         <thead>
           <tr>
-            <th
-              onClick={() => {
-                handleColumnSort("name");
-              }}
-            >
-              Name
-            </th>
-            <th
-              onClick={() => {
-                handleColumnSort("username");
-              }}
-            >
-              Username
-            </th>
-            <th
-              onClick={() => {
-                handleColumnSort("email");
-              }}
-            >
-              Email
-            </th>
-            <th
-              onClick={() => {
-                handleColumnSort("address");
-              }}
-            >
-              Address
-            </th>
-            <th
-              onClick={() => {
-                handleColumnSort("phone");
-              }}
-            >
-              Phone
-            </th>
-            <th
-              onClick={() => {
-                handleColumnSort("company");
-              }}
-            >
-              Company
-            </th>
+            <th onClick={handleSort("name")}>Name</th>
+            <th onClick={handleSort("username")}>Username</th>
+            <th onClick={handleSort("email")}>Email</th>
+            <th onClick={handleSort("address")}>Address</th>
+            <th onClick={handleSort("phone")}>Phone</th>
+            <th onClick={handleSort("company")}>Company</th>
           </tr>
         </thead>
         <tbody>
