@@ -1,17 +1,11 @@
 import { useMemo, useState } from "react";
 import type { User } from "~/types/user";
+import UserTableHeader from "./UserTableHeader";
+import { SORTABLE_KEYS, type SortableKeys } from "~/types/sortableKeys";
 
 type UserTableProps = {
   users: User[];
 };
-
-type SortableKeys =
-  | "name"
-  | "username"
-  | "email"
-  | "address"
-  | "phone"
-  | "company";
 
 type SortConfig = {
   key: SortableKeys;
@@ -47,11 +41,9 @@ export default function UserTable({ users }: UserTableProps) {
   const handleColumnSort = (key: SortableKeys) => {
     setSortConfig((prevState) => ({
       key,
-      isAsc: prevState.key === key ? !prevState.isAsc : prevState.isAsc,
+      isAsc: prevState.key === key ? !prevState.isAsc : true,
     }));
   };
-
-  const handleSort = (key: SortableKeys) => () => handleColumnSort(key);
 
   const sortedUsers = useMemo(
     () => sortUsers(users, sortConfig.key, sortConfig.isAsc),
@@ -63,12 +55,15 @@ export default function UserTable({ users }: UserTableProps) {
       <table className="border-collapse border">
         <thead>
           <tr>
-            <th onClick={handleSort("name")}>Name</th>
-            <th onClick={handleSort("username")}>Username</th>
-            <th onClick={handleSort("email")}>Email</th>
-            <th onClick={handleSort("address")}>Address</th>
-            <th onClick={handleSort("phone")}>Phone</th>
-            <th onClick={handleSort("company")}>Company</th>
+            {SORTABLE_KEYS.map((key) => (
+              <UserTableHeader
+                key={key}
+                sortKey={key}
+                handleSort={handleColumnSort}
+                isSorted={sortConfig.key === key}
+                isAsc={sortConfig.isAsc}
+              />
+            ))}
           </tr>
         </thead>
         <tbody>
