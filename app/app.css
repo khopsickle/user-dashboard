@@ -8,8 +8,8 @@
 
 html,
 body {
-  @apply bg-white dark:bg-slate-900;
-  @apply text-slate-900 dark:text-slate-300;
+  @apply bg-white dark:bg-slate-700;
+  @apply text-slate-700 dark:text-slate-300;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;

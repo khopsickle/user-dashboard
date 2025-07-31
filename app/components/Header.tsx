@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 export default function Header() {
   return (
     <nav aria-label="Main Navigation" className="border-b-1 border-black">
-      <ul className="flex">
+      <ul className="flex container mx-auto">
         <li className="p-4">
           <NavLink to="/" end>
             User List
