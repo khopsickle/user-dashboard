@@ -27,6 +27,7 @@ export default function UserList() {
 
   return (
     <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
-        <LazyUserTable users={data} />;
+      <LazyUserTable users={data} />;
     </Suspense>
+  );
 }
