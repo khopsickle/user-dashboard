@@ -70,36 +70,29 @@ Create a production build:
 npm run build
 ```
 
-## Deployment
-
-Static deployment to Netlify, Vercel, or GH Pages
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
 ## To Do
 
-- virtualization
+required:
+
 - unit tests
-- comments/documentation
-- optimizations
+- docs
+- comments
+- virtualization
 
 optional:
 
 - prod build deployment
 - integration tests
+- accessibility tests
 
----
+ui improvements:
+
+- Add a clear button to search input
+- Change search to trigger on keydown and add a debounce for performance optimization
+- Add highlighting to active sort column
+- Add up/down arrows active column heading to show the sort direction
+- Add pagination for large page results
+- Additional aria roles for screen readers; currently there are basic aria attributes and keyboard navigation
+- Doesn't check for duplicate users
 
 Built with ❤️ using React Router.
