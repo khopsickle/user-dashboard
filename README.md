@@ -30,7 +30,7 @@ Your application will be available at `http://localhost:5173`.
 - **React Router**: for navigation
 - **Tailwind CSS**: for responsive styling, and styling utilities to help with accessbility
 - **Axios**: for HTTP requests from JSONPlaceholder API
-- **React Query**: for handling data and request load/error states
+- **React Query**: for handling data and request load/error states and saving new users
 
 ### Dev & Build Tools
 
@@ -55,7 +55,7 @@ Axios + React Query is a common React pattern. Axios handles the actual HTTP req
 As a bonus, I've also never actually used React Query before and wanted to check it out.
 
 **Form Validation**
-I considered Formik and React Hook Form for more professional and convenient form validation. But since the add user feature is fairly straightforward with simple string inputs and few required fields, I opted to use native React features. Adding a dependency and modifying the form for better performance could be a later improvement.
+React Hook Form is lightweight and convenient for form validation. No need to handle error states or custom form validation, can also easily add additional input fields.
 
 **Testing**
 While the app could benefit from robust E2E testing, Jest + React Testing Library can cover all the major user paths without adding too much bloat or slowing down the testing process. Adding on Cypress or Playwright can be done further down the line if the app were to become more complex.
