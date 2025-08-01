@@ -3,6 +3,8 @@ import type { User } from "~/types/user";
 import UserTableHeader from "./UserTableHeader";
 import { SORTABLE_KEYS, type SortableKeys } from "~/types/sortableKeys";
 import UserSearch from "./UserSearch";
+import Modal from "./Modal";
+import UserModalContent from "./UserModalContent";
 
 type UserTableProps = {
   users: User[];
@@ -46,7 +48,6 @@ function filterUsers(users: User[], query: string): User[] {
       user.address.street,
       user.phone,
       user.company.name,
-      user.website,
     ];
     return searchableFields.some((field) =>
       field.toLowerCase().includes(lowercaseQuery),
@@ -60,6 +61,7 @@ export default function UserTable({ users }: UserTableProps) {
     isAsc: true,
   });
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const handleColumnSort = (key: SortableKeys) => {
     setSortConfig((prevState) => ({
@@ -83,7 +85,7 @@ export default function UserTable({ users }: UserTableProps) {
   );
 
   return (
-    <main className="p-4 container mx-auto">
+    <main className="p-4 container mx-auto" role="main" aria-label="User directory">
       <UserSearch onSearch={handleSearch} />
       <div className="overflow-x-auto">
         <table className="border-collapse border w-full">
@@ -111,20 +113,27 @@ export default function UserTable({ users }: UserTableProps) {
               </tr>
             ) : (
               sortedUsers.map((user) => (
-                <tr key={user.id.toString()}>
+                <tr
+                  key={user.id.toString()}
+                  onClick={() => setSelectedUser(user)}
+                >
                   <td>{user.name}</td>
                   <td>{user.username}</td>
                   <td>{user.email}</td>
                   <td>{user.address.street}</td>
                   <td>{user.phone}</td>
-                  <td>
-                    {user.company.name} {user.website}
-                  </td>
+                  <td>{user.company.name}</td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
+
+        {selectedUser && (
+          <Modal heading={selectedUser.name} handleClick={setSelectedUser}>
+            <UserModalContent user={selectedUser} />
+          </Modal>
+        )}
       </div>
     </main>
   );
