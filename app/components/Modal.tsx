@@ -31,10 +31,8 @@ export default function Modal({ heading, children, handleClick }: ModalProps) {
       aria-labelledby="modal-heading"
       className="fixed inset-0 bg-slate-800/60 flex items-center justify-center z-50"
     >
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
-        <h2 className="text-xl font-medium text-slate-900 dark:text-white">
-          {heading}
-        </h2>
+      <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-lg max-w-md w-full relative">
+        <h2 className="text-xl font-medium">{heading}</h2>
 
         <div className="px-6 py-4 space-y-2">{children}</div>
 
