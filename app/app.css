@@ -22,7 +22,7 @@ th {
 }
 
 input {
-  @apply border rounded;
+  @apply border rounded px-3 py-2;
 }
 
 button {

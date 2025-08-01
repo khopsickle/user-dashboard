@@ -22,7 +22,7 @@ export default function UserSearch({ onSearch }: UserSearchProps) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Find a user..."
-        className="px-3 py-2 flex-1"
+        className="flex-1"
       />
       <button type="submit">Search</button>
     </form>
