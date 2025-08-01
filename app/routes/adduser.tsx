@@ -23,7 +23,7 @@ export default function AddUser() {
     queryClient.setQueryData(["users"], [...users, newUser]);
   }
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
       <LazyAddUserForm onAddUser={handleAddUser} />
     </Suspense>
   );

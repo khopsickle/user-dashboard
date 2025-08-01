@@ -3,6 +3,7 @@ import type { Route } from "./+types/userlist";
 import { queryFn } from "~/lib/queryClient";
 import type { User } from "~/types/user";
 import { LazyUserTable } from "~/components/LazyComponents";
+import { Suspense } from "react";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -24,5 +25,8 @@ export default function UserList() {
     return <>No users found.</>;
   }
 
-  return <LazyUserTable users={data} />;
+  return (
+    <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
+        <LazyUserTable users={data} />;
+    </Suspense>
 }
