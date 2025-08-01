@@ -3,6 +3,7 @@ import type { User } from "~/types/user";
 import { InputField } from "./InputField";
 import { emptyFormData } from "~/lib/formDefaults";
 import getNestedValue from "~/lib/getNestedValue";
+import { useState } from "react";
 
 type AddUserFormProps = {
   onAddUser: (user: User) => void;
@@ -94,6 +95,7 @@ const formFields: FieldConfig[] = [
 ];
 
 export default function AddUserForm({ onAddUser }: AddUserFormProps) {
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -107,6 +109,8 @@ export default function AddUserForm({ onAddUser }: AddUserFormProps) {
   const onSubmit = (data: User) => {
     onAddUser(data);
     reset(emptyFormData);
+    setSuccessMessage("User added successfully!");
+    setTimeout(() => setSuccessMessage(null), 5000);
   };
 
   const groupedFields = formFields.reduce<Record<string, FieldConfig[]>>(
@@ -125,6 +129,12 @@ export default function AddUserForm({ onAddUser }: AddUserFormProps) {
       className="space-y-4 max-w-2xl mx-auto my-4 p-8 border rounded"
       noValidate
     >
+      {successMessage && (
+        <div className="p-2 mb-4 text-emerald-800 bg-emerald-100 border border-emerald-300 rounded">
+          {successMessage}
+        </div>
+      )}
+
       {groupedFields["_"]?.map(
         ({ key, label, type = "text", required, pattern }) => (
           <InputField
