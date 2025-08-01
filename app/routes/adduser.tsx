@@ -1,4 +1,7 @@
+import AddUserForm from "~/components/AddUserForm";
 import type { Route } from "./+types/adduser";
+import type { User } from "~/types/user";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,5 +11,15 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function AddUser() {
-  return <>add user page</>;
+  const queryClient = useQueryClient();
+
+  function handleAddUser(user: User) {
+    console.log("user added", user);
+    const users = queryClient.getQueryData<User[]>(["users"]) || [];
+    const maxId = users.length ? Math.max(...users.map((u) => u.id)) : 0;
+    const newUser = { ...user, id: maxId + 1 };
+
+    queryClient.setQueryData(["users"], [...users, newUser]);
+  }
+  return <AddUserForm onAddUser={handleAddUser} />;
 }

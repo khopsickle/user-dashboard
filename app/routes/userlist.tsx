@@ -13,7 +13,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function UserList() {
   const { isLoading, error, data } = useQuery<User[], Error>({
-    queryKey: ["userData"],
+    queryKey: ["users"],
     queryFn: queryFn,
     staleTime: 15 * 60 * 1000, // 15 mins
   });
