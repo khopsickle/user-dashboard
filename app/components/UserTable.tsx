@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import type { User } from "~/types/user";
 import UserTableHeader from "./UserTableHeader";
 import { SORTABLE_KEYS, type SortableKeys } from "~/types/sortableKeys";
@@ -6,6 +6,7 @@ import UserSearch from "./UserSearch";
 import UserModalContent from "./UserModalContent";
 import getNestedValue from "~/lib/getNestedValue";
 import { LazyModal } from "./LazyComponents";
+import LoadingFallback from "./LoadingFallback";
 
 type UserTableProps = {
   users: User[];
@@ -122,9 +123,14 @@ export default function UserTable({ users }: UserTableProps) {
         </table>
 
         {selectedUser && (
-          <LazyModal heading={selectedUser.name} handleClick={setSelectedUser}>
-            <UserModalContent user={selectedUser} />
-          </LazyModal>
+          <Suspense fallback={<LoadingFallback />}>
+            <LazyModal
+              heading={selectedUser.name}
+              handleClick={setSelectedUser}
+            >
+              <UserModalContent user={selectedUser} />
+            </LazyModal>
+          </Suspense>
         )}
       </div>
     </main>

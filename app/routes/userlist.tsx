@@ -4,6 +4,7 @@ import { queryFn } from "~/lib/queryClient";
 import type { User } from "~/types/user";
 import { LazyUserTable } from "~/components/LazyComponents";
 import { Suspense } from "react";
+import LoadingFallback from "~/components/LoadingFallback";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -26,7 +27,7 @@ export default function UserList() {
   }
 
   return (
-    <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
+    <Suspense fallback={<LoadingFallback />}>
       <LazyUserTable users={data} />;
     </Suspense>
   );

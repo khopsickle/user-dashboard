@@ -3,6 +3,7 @@ import type { User } from "~/types/user";
 import { useQueryClient } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { LazyAddUserForm } from "~/components/LazyComponents";
+import LoadingFallback from "~/components/LoadingFallback";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -23,7 +24,7 @@ export default function AddUser() {
     queryClient.setQueryData(["users"], [...users, newUser]);
   }
   return (
-    <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
+    <Suspense fallback={<LoadingFallback />}>
       <LazyAddUserForm onAddUser={handleAddUser} />
     </Suspense>
   );
