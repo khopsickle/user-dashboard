@@ -1,10 +1,11 @@
 export const SORTABLE_KEYS = [
-  "name",
-  "username",
-  "email",
-  "address",
-  "phone",
-  "company",
+  { key: "name", label: "Name" },
+  { key: "username", label: "Username" },
+  { key: "email", label: "Email" },
+  { key: "address.street", label: "Address" },
+  { key: "phone", label: "Phone" },
+  { key: "company.name", label: "Company" },
 ] as const;
 
-export type SortableKeys = (typeof SORTABLE_KEYS)[number];
+export type SortableKeys = (typeof SORTABLE_KEYS)[number]["key"];
+{}

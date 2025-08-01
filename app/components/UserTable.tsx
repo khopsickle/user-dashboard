@@ -5,6 +5,7 @@ import { SORTABLE_KEYS, type SortableKeys } from "~/types/sortableKeys";
 import UserSearch from "./UserSearch";
 import Modal from "./Modal";
 import UserModalContent from "./UserModalContent";
+import getNestedValue from "~/lib/getNestedValue";
 
 type UserTableProps = {
   users: User[];
@@ -15,21 +16,15 @@ type SortConfig = {
   isAsc: boolean;
 };
 
-function getNestedValue(user: User, key: SortableKeys): string {
-  switch (key) {
-    case "address":
-      return user.address.street;
-    case "company":
-      return user.company.name;
-    default:
-      return user[key];
-  }
+function getStringifiedNestedValue<T>(obj: T, path: string): string {
+  const value = getNestedValue(obj, path);
+  return typeof value === "string" ? value : "";
 }
 
 function sortUsers(users: User[], key: SortableKeys, isAsc: boolean = true) {
   return [...users].sort((a, b) => {
-    const aValue = getNestedValue(a, key);
-    const bValue = getNestedValue(b, key);
+    const aValue = getStringifiedNestedValue(a, key);
+    const bValue = getStringifiedNestedValue(b, key);
 
     return isAsc ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
   });
@@ -41,17 +36,10 @@ function filterUsers(users: User[], query: string): User[] {
   const lowercaseQuery = query.toLowerCase();
 
   return users.filter((user) => {
-    const searchableFields = [
-      user.name,
-      user.username,
-      user.email,
-      user.address.street,
-      user.phone,
-      user.company.name,
-    ];
-    return searchableFields.some((field) =>
-      field.toLowerCase().includes(lowercaseQuery),
-    );
+    return SORTABLE_KEYS.some(({ key }) => {
+      const value = getStringifiedNestedValue(user, key);
+      return value.toLowerCase().includes(lowercaseQuery);
+    });
   });
 }
 
@@ -85,15 +73,20 @@ export default function UserTable({ users }: UserTableProps) {
   );
 
   return (
-    <main className="p-4 container mx-auto" role="main" aria-label="User directory">
+    <main
+      className="p-4 container mx-auto"
+      role="main"
+      aria-label="User directory"
+    >
       <UserSearch onSearch={handleSearch} />
       <div className="overflow-x-auto">
         <table className="border-collapse border w-full">
           <thead>
             <tr>
-              {SORTABLE_KEYS.map((key) => (
+              {SORTABLE_KEYS.map(({ key, label }) => (
                 <UserTableHeader
                   key={key}
+                  label={label}
                   sortKey={key}
                   handleSort={handleColumnSort}
                   isSorted={sortConfig.key === key}
@@ -112,19 +105,18 @@ export default function UserTable({ users }: UserTableProps) {
                 </td>
               </tr>
             ) : (
-              sortedUsers.map((user) => (
-                <tr
-                  key={user.id.toString()}
-                  onClick={() => setSelectedUser(user)}
-                >
-                  <td>{user.name}</td>
-                  <td>{user.username}</td>
-                  <td>{user.email}</td>
-                  <td>{user.address.street}</td>
-                  <td>{user.phone}</td>
-                  <td>{user.company.name}</td>
-                </tr>
-              ))
+              <>
+                {sortedUsers.map((user) => (
+                  <tr
+                    key={user.id.toString()}
+                    onClick={() => setSelectedUser(user)}
+                  >
+                    {SORTABLE_KEYS.map(({ key }) => (
+                      <td key={key}>{getStringifiedNestedValue(user, key)}</td>
+                    ))}
+                  </tr>
+                ))}
+              </>
             )}
           </tbody>
         </table>

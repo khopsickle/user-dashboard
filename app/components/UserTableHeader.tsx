@@ -3,6 +3,7 @@ import { type SortableKeys } from "~/types/sortableKeys";
 
 type UserTableHeaderProps = {
   sortKey: SortableKeys;
+  label: string;
   handleSort: (key: SortableKeys) => void;
   isSorted?: boolean;
   isAsc?: boolean;
@@ -11,6 +12,7 @@ type UserTableHeaderProps = {
 export default function UserTableHeader({
   handleSort,
   sortKey,
+  label,
   isSorted = false,
   isAsc = true,
 }: UserTableHeaderProps) {
@@ -34,7 +36,7 @@ export default function UserTableHeader({
       aria-sort={isSorted ? (isAsc ? "ascending" : "descending") : "none"}
       className="cursor-pointer select-none break-word"
     >
-      {sortKey.charAt(0).toUpperCase() + sortKey.slice(1)}
+      {label}
     </th>
   );
 }
