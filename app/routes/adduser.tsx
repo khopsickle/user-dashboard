@@ -1,7 +1,8 @@
-import AddUserForm from "~/components/AddUserForm";
 import type { Route } from "./+types/adduser";
 import type { User } from "~/types/user";
 import { useQueryClient } from "@tanstack/react-query";
+import { Suspense } from "react";
+import { LazyAddUserForm } from "~/components/LazyComponents";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -21,5 +22,9 @@ export default function AddUser() {
 
     queryClient.setQueryData(["users"], [...users, newUser]);
   }
-  return <AddUserForm onAddUser={handleAddUser} />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LazyAddUserForm onAddUser={handleAddUser} />
+    </Suspense>
+  );
 }

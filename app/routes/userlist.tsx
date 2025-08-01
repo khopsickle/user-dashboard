@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Route } from "./+types/userlist";
 import { queryFn } from "~/lib/queryClient";
-import UserTable from "~/components/UserTable";
 import type { User } from "~/types/user";
+import { LazyUserTable } from "~/components/LazyComponents";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -24,5 +24,5 @@ export default function UserList() {
     return <>No users found.</>;
   }
 
-  return <UserTable users={data} />;
+  return <LazyUserTable users={data} />;
 }

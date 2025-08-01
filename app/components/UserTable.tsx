@@ -3,9 +3,9 @@ import type { User } from "~/types/user";
 import UserTableHeader from "./UserTableHeader";
 import { SORTABLE_KEYS, type SortableKeys } from "~/types/sortableKeys";
 import UserSearch from "./UserSearch";
-import Modal from "./Modal";
 import UserModalContent from "./UserModalContent";
 import getNestedValue from "~/lib/getNestedValue";
+import { LazyModal } from "./LazyComponents";
 
 type UserTableProps = {
   users: User[];
@@ -122,9 +122,9 @@ export default function UserTable({ users }: UserTableProps) {
         </table>
 
         {selectedUser && (
-          <Modal heading={selectedUser.name} handleClick={setSelectedUser}>
+          <LazyModal heading={selectedUser.name} handleClick={setSelectedUser}>
             <UserModalContent user={selectedUser} />
-          </Modal>
+          </LazyModal>
         )}
       </div>
     </main>
