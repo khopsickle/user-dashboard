@@ -22,11 +22,13 @@ npm run dev
 
 Your application will be available at `http://localhost:5173`.
 
+---
+
 ## Documentation
 
 ### Core Components
 
-**UserTable**
+#### UserTable
 
 Main view of list of users with sorting, search, and a detailed user modal.
 
@@ -36,7 +38,7 @@ Main view of list of users with sorting, search, and a detailed user modal.
 - **UserTableHeader**: label/heading row of the table
 - **UserModalContent**: body content of the modal containing user data
 
-**AddUserForm**
+#### AddUserForm
 
 Form component to add new users. New users are cached in local application state.
 
@@ -44,7 +46,7 @@ Form component to add new users. New users are cached in local application state
 
 - **InputField**: reusable form input
 
-**Modal**
+#### Modal
 
 Reusable modal.
 
@@ -62,7 +64,9 @@ Reusable modal.
 - Memoized functions and values to prevent unnecessary re-renders
 - Attempted virtualization with `react-window` but ran into problems with table elements being incompatible with `react-window`. Fixing it would require a major refactor of this component's JSX and attached state.
 
-## Architecture
+---
+
+## Architectural Design
 
 ### Frontend
 
@@ -108,13 +112,7 @@ Regarding the tests themselves, since the project has known requirements and wel
 
 So far there are only tests for the two major components, the UserTable and AddUserForm. 'Skipped' tests were included without implementation to give an idea of what sort of unit tests I would've liked to add.
 
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
+---
 
 ## To Do
 
