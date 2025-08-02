@@ -53,36 +53,49 @@ describe("AddUserForm", () => {
     jest.useRealTimers();
   });
 
-  it("renders all input fields", () => {
-    expect(screen.getByLabelText("Name")).toBeInTheDocument();
-    expect(screen.getByLabelText("Username")).toBeInTheDocument();
-    expect(screen.getByLabelText("Email")).toBeInTheDocument();
-    expect(screen.getByLabelText("Phone")).toBeInTheDocument();
-    expect(screen.getByLabelText("Website")).toBeInTheDocument();
-    expect(screen.getByLabelText("Company Name")).toBeInTheDocument();
-    expect(screen.getByLabelText("Street")).toBeInTheDocument();
-    expect(screen.getByLabelText("Suite")).toBeInTheDocument();
-    expect(screen.getByLabelText("City")).toBeInTheDocument();
-    expect(screen.getByLabelText("Zipcode")).toBeInTheDocument();
+  describe("rendering", () => {
+    it("renders all input fields", () => {
+      expect(screen.getByLabelText("Name")).toBeInTheDocument();
+      expect(screen.getByLabelText("Username")).toBeInTheDocument();
+      expect(screen.getByLabelText("Email")).toBeInTheDocument();
+      expect(screen.getByLabelText("Phone")).toBeInTheDocument();
+      expect(screen.getByLabelText("Website")).toBeInTheDocument();
+      expect(screen.getByLabelText("Company Name")).toBeInTheDocument();
+      expect(screen.getByLabelText("Street")).toBeInTheDocument();
+      expect(screen.getByLabelText("Suite")).toBeInTheDocument();
+      expect(screen.getByLabelText("City")).toBeInTheDocument();
+      expect(screen.getByLabelText("Zipcode")).toBeInTheDocument();
+    });
+
+    xit("renders address fields together", () => {});
   });
 
-  xit("shows validation errors on empty required fields", async () => {
-    expect(mockOnAddUser).not.toHaveBeenCalled();
+  describe("validations", () => {
+    xit("shows validation errors on empty required fields", async () => {
+      expect(mockOnAddUser).not.toHaveBeenCalled();
+    });
+
+    xit("shows invalid email error", async () => {
+      expect(errorMessage).toBeInTheDocument();
+      expect(mockOnAddUser).not.toHaveBeenCalled();
+    });
   });
 
-  xit("shows invalid email error", async () => {
-    expect(errorMessage).toBeInTheDocument();
-    expect(mockOnAddUser).not.toHaveBeenCalled();
+  describe("form submission", () => {
+    xit("submits form successfully and shows success message", async () => {
+      expect(mockOnAddUser).toHaveBeenCalledWith(user);
+      expect(screen.getByText(/user added successfully/i)).toBeInTheDocument();
+    });
+    xit("success message disappears after 5 sec", async () => {
+      // success message disappears after 5 seconds
+
+      expect(
+        screen.queryByText(/user added successfully/i),
+      ).not.toBeInTheDocument();
+    });
+    xit("fields reset on submission", async () => {});
   });
 
-  xit("submits form successfully and shows success message", async () => {
-    expect(mockOnAddUser).toHaveBeenCalledWith(user);
-    expect(screen.getByText(/user added successfully/i)).toBeInTheDocument();
-
-    // success message disappears after 5 seconds
-
-    expect(
-      screen.queryByText(/user added successfully/i),
-    ).not.toBeInTheDocument();
-  });
+  // getNestedValue
+  // getErrorMessage
 });
