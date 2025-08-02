@@ -7,6 +7,28 @@ type ModalProps = {
   handleClick: React.Dispatch<React.SetStateAction<User | null>>;
 };
 
+/**
+ * Modal Component
+ *
+ * A responsive, reusable modal component with a Heading and Close
+ *   button featuring a background overlay for visual separation
+ *   from page content.
+ *
+ * Accessibility/keyboard navigaton:
+ * - ESC key to close
+ * - Focus management (auto-focuses close button)
+ * - ARIA attributes for screen readers
+ *
+ * @param props - Component props
+ * @param props.heading - The modal title at top
+ * @param props.children - Content inside modal body
+ * @param props.handleClick - Function to close the modal
+ *
+ * @returns the modal as a JSX element
+ *
+ * Future improvements: close modal on `blur` (clicking outside the modal)
+ */
+
 export default function Modal({ heading, children, handleClick }: ModalProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const handleEscKey = useCallback(

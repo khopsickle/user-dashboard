@@ -16,7 +16,6 @@ export default function AddUser() {
   const queryClient = useQueryClient();
 
   function handleAddUser(user: User) {
-    console.log("user added", user);
     const users = queryClient.getQueryData<User[]>(["users"]) || [];
     const maxId = users.length ? Math.max(...users.map((u) => u.id)) : 0;
     const newUser = { ...user, id: maxId + 1 };

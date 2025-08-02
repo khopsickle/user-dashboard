@@ -1,7 +1,24 @@
 import { useState } from "react";
 
-// opted for form submission instead of on input change for performance reasons
-// could change to on input change and implement debounce to the same effect for better UX
+/**
+ * UserSearch Component
+ *
+ * A search component that allows users to filter user data.
+ * Triggers on form submission for performance reasons on large data sets.
+ *
+ * Accessibility:
+ * -  keyboard interactions for input and submit
+ *
+ * @param props - Component props
+ * @param props.onSearch - callback when form is submitted
+ *
+ * @returns search form with input and submit button as JSX element
+ *
+ * Future improvements:
+ * - add 'clear input' functionality
+ * - change search to trigger on input change and
+ *   implement debounce for better UX
+ */
 
 type UserSearchProps = {
   onSearch: (query: string) => void;

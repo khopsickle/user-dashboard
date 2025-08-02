@@ -17,10 +17,35 @@ type SortConfig = {
   isAsc: boolean;
 };
 
+/**
+ * getStringifiedNestedValue Helper
+ *
+ * Extracts a nested value from an object and converts it to a string
+ *
+ * @param obj - object to extract the value from
+ * @param path - dot-notation path to the value
+ *
+ * @returns stringified value or empty string if not a string
+ *
+ * Note: move to its own helper file
+ */
+
 function getStringifiedNestedValue<T>(obj: T, path: string): string {
   const value = getNestedValue(obj, path);
   return typeof value === "string" ? value : "";
 }
+
+/**
+ * sortUsers Helper
+ *
+ * Sorts array of users by specified key
+ *
+ * @param users - array of users to sort
+ * @param key - field to sort by
+ * @param isAsc - bool val to destermine sort order (default: true/asc)
+ *
+ * @returns a new sorted array of users
+ */
 
 function sortUsers(users: User[], key: SortableKeys, isAsc: boolean = true) {
   return [...users].sort((a, b) => {
@@ -30,6 +55,18 @@ function sortUsers(users: User[], key: SortableKeys, isAsc: boolean = true) {
     return isAsc ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
   });
 }
+
+/**
+ * filterUsers Helper
+ *
+ * Filters based on search query across all data fields.
+ *  Case-insensitive.
+ *
+ * @param users - array of users to filter
+ * @param query - search query string
+ *
+ * @returns filtered array of users matching query
+ */
 
 function filterUsers(users: User[], query: string): User[] {
   if (!query) return users;
@@ -43,6 +80,37 @@ function filterUsers(users: User[], query: string): User[] {
     });
   });
 }
+
+/**
+ * UserTable Component
+ *
+ * A comprehensive table component displaying user data.
+ *  - Sort by column by clicking column header
+ *  - Click row to view full user data
+ *  - Horizontal scrolling and responsive breakpoints
+ *
+ * Searchable:
+ *  - Searchable across all user fields on clicking Search
+ *  - Displays "no result message"
+ *  - Displays all users for empty string
+ *
+ * Accessibility:
+ *  - Tab through table headers
+ *  - ARIA labels and keyboard navigation
+ *
+ * @param props - Component props
+ * @param props.users - array of user objects to display in table
+ *
+ * @returns user table with search and modal as a JSX element
+ *
+ * Future improvements:
+ * - pagination or virtualization for large datasets
+ * - expanded keyboard interactions (open modal, arrow keys to sort asc or desc)
+ * - more screen reader attrs
+ * - on small screens, collapse table columns into single cell - better mobile experience than side scrolling
+ * - add highlight to active sort column
+ *
+ */
 
 export default function UserTable({ users }: UserTableProps) {
   const [sortConfig, setSortConfig] = useState<SortConfig>({

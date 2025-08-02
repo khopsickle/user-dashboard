@@ -30,6 +30,21 @@ type FieldConfig = {
   pattern?: { value: RegExp; message: string };
 };
 
+/**
+ * getErrorMessage Helper
+ *
+ * Extracts error message from react-hook-form errors object, defensively
+ *
+ * @param errors - errors object from react-hook-form
+ * @param path - dot-notation path to the error message
+ *
+ * @returns string error message or undefined if no error
+ *
+ * Note: extract into its own helper
+ *
+ * Future improvement: duplicate user validation? makes more sense if there was a backend
+ */
+
 function getErrorMessage<T>(errors: T, path: string): string | undefined {
   const fieldError = getNestedValue(errors, path);
   if (
@@ -94,6 +109,37 @@ const formFields: FieldConfig[] = [
   },
 ];
 
+/**
+ * AddUserForm Component
+ *
+ * A form component for adding new users.
+ *  - controlled form inputs
+ *  - success message on submit
+ *  - success message clears itself after 5 sec
+ *  - form resets itself after successful submit
+ *
+ * Validation:
+ * - simple validation for required fields
+ * - ensures email is in proper format with regEx
+ * - detailed error messages
+ *
+ * Accessibility:
+ * - tab navigation through fields
+ * - input labels
+ *
+ * @param props - Component props
+ * @param props.onAddUser - callback when user is successfully added
+ *  User gets added to the React Query cache of data fetched from
+ *  endpoint (see adduser.tsx)
+ *
+ * @returns JSX element representing the add user form
+ *
+ * Future improvements:
+ * - validate format for phone number, zipcode, etc. fields
+ * - return user to the table list to see the added user
+ * - increased accessibility features for screen readers
+ */
+
 export default function AddUserForm({ onAddUser }: AddUserFormProps) {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const {
@@ -113,6 +159,7 @@ export default function AddUserForm({ onAddUser }: AddUserFormProps) {
     setTimeout(() => setSuccessMessage(null), 5000);
   };
 
+  // returns all fields grouped by 'section'
   const groupedFields = formFields.reduce<Record<string, FieldConfig[]>>(
     (acc, field) => {
       const section = field.section || "_";
