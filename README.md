@@ -38,6 +38,9 @@ Main view of list of users with sorting, search, and a detailed user modal.
 - **UserTableHeader**: label/heading row of the table
 - **UserModalContent**: body content of the modal containing user data
 
+> [!WARNING]
+> This component is quite large and could be split out further into a UserTableContainer and UserTable, so that the state management and data manipulation is separated from the rendered form. Smaller components would be easier to read and maintain, easier to unit test, improve re-rendering control, and enforce single responsibility principle.
+
 #### AddUserForm
 
 Form component to add new users. New users are cached in local application state.
@@ -45,6 +48,9 @@ Form component to add new users. New users are cached in local application state
 **Utility components**:
 
 - **InputField**: reusable form input
+
+> [!WARNING]
+> This component is also quite heavy, the formConfig/validation and error message extraction could be pulled out into their own file for better separation from the rendering. Smaller components would be easier to read and maintain, easier to unit test, improve re-rendering control, and enforce single responsibility principle.
 
 #### Modal
 
@@ -63,6 +69,22 @@ Reusable modal.
 - Major components have been lazy loaded
 - Memoized functions and values to prevent unnecessary re-renders
 - Attempted virtualization with `react-window` but ran into problems with table elements being incompatible with `react-window`. Fixing it would require a major refactor of this component's JSX and attached state.
+
+### Routes
+
+There are two main routes:
+
+#### Index: userlist
+
+- A list of all users fetched from the API, displayed in a sortable table.
+
+#### Add: adduser
+
+- A form with validation, error messages, and success messages.
+
+> [!WARNING]
+> These routes could be cleaned up: extracting fetching and adding user logic into custom hooks would better separate data management from the UI.
+> The error states could be significantly improved with styling and messages.
 
 ---
 
@@ -110,7 +132,10 @@ While the app could benefit from robust E2E testing, Jest + React Testing Librar
 
 Regarding the tests themselves, since the project has known requirements and well-defined UI and API, both TDD and red-green-refactor approach seemed overkill. I opted to create a working application first then add key unit tests for component behavior.
 
-So far there are only tests for the two major components, the UserTable and AddUserForm. 'Skipped' tests were included without implementation to give an idea of what sort of unit tests I would've liked to add.
+> [!WARNING]
+> So far there are only tests for the two major components, the UserTable and AddUserForm. 'Skipped' tests were included without implementation to give an idea of what sort of unit tests I would've liked to add.
+
+> Since the project already uses vite, it could benefit from using Vitest instead of Jest. Though I'm unfamiliar with Vitest.
 
 ---
 

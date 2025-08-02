@@ -59,6 +59,16 @@ function getErrorMessage<T>(errors: T, path: string): string | undefined {
   return undefined;
 }
 
+/**
+ * formFields const
+ * Sets up form fields for dynamic rendering of InputFields
+ *
+ * type: sets the input type (email, tel, url)
+ * section: groups related fields together (address fields)
+ * required: custom validation message
+ * pattern: regex pattern for validation
+ */
+
 const formFields: FieldConfig[] = [
   { key: "name", label: "Name", required: "Name is required" },
   { key: "username", label: "Username", required: "Username is required" },
@@ -159,11 +169,24 @@ export default function AddUserForm({ onAddUser }: AddUserFormProps) {
     setTimeout(() => setSuccessMessage(null), 5000);
   };
 
-  // returns all fields grouped by 'section'
+  /**
+   * groupedFields Helper
+   *
+   * Reduces flat formFields into sections
+   *  Example:
+   * {
+   *   "_": [name, email, phone],
+   *   "Address": [street, city, zipcode]
+   * }
+   */
+
   const groupedFields = formFields.reduce<Record<string, FieldConfig[]>>(
     (acc, field) => {
+      // fields with '_' are in the default group
       const section = field.section || "_";
+      // initialize an array if it doesn't exist
       acc[section] ||= [];
+      // add field to its section
       acc[section].push(field);
       return acc;
     },

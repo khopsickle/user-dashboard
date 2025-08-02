@@ -38,20 +38,25 @@ function getStringifiedNestedValue<T>(obj: T, path: string): string {
 /**
  * sortUsers Helper
  *
- * Sorts array of users by specified key
+ * Sorts array of users by specified key using locale string comparison.
+ *  - locale compare returns # value to use with .sort
+ *  - accounts for accents, punctuation, and capitalization
  *
  * @param users - array of users to sort
- * @param key - field to sort by
+ * @param key - field (dot-notation) to sort by
  * @param isAsc - bool val to destermine sort order (default: true/asc)
  *
  * @returns a new sorted array of users
  */
 
 function sortUsers(users: User[], key: SortableKeys, isAsc: boolean = true) {
+  // sort on shallow copy
   return [...users].sort((a, b) => {
+    // extract values using dot notation
     const aValue = getStringifiedNestedValue(a, key);
     const bValue = getStringifiedNestedValue(b, key);
 
+    // compare a to b for asc, reverse comparison for desc
     return isAsc ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
   });
 }
@@ -110,6 +115,8 @@ function filterUsers(users: User[], query: string): User[] {
  * - on small screens, collapse table columns into single cell - better mobile experience than side scrolling
  * - add highlight to active sort column
  *
+ * Note: This component is quite large and could be split out further into a UserTableContainer and UserTable, so that the state management and data manipulation is separated from the rendered form.
+ *
  */
 
 export default function UserTable({ users }: UserTableProps) {
@@ -123,6 +130,7 @@ export default function UserTable({ users }: UserTableProps) {
   const handleColumnSort = (key: SortableKeys) => {
     setSortConfig((prevState) => ({
       key,
+      // toggle sort direction
       isAsc: prevState.key === key ? !prevState.isAsc : true,
     }));
   };

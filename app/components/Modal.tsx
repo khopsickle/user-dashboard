@@ -31,6 +31,8 @@ type ModalProps = {
 
 export default function Modal({ heading, children, handleClick }: ModalProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // ESC key triggers handleClick and closes the modal, memoized to avoid unnecessary re-creaation
   const handleEscKey = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -39,10 +41,15 @@ export default function Modal({ heading, children, handleClick }: ModalProps) {
     },
     [handleClick],
   );
+
   useEffect(() => {
+    // auto focus on close button
     closeButtonRef.current?.focus();
 
+    // register ESC key handler
     document.addEventListener("keydown", handleEscKey);
+
+    // cleanup the handler when the ESC is pressed
     return () => document.removeEventListener("keydown", handleEscKey);
   }, [handleClick]);
 
